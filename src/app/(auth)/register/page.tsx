@@ -1,12 +1,11 @@
 "use client";
-
-import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 
-const RegisterPage = () => {
+const RegisterPage: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,30 +15,29 @@ const RegisterPage = () => {
     location: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const isValidEmail = (email) => {
+  const isValidEmail = (email: string): boolean => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await axios.post("/api/register", formData);
       console.log(response.data);
       // Handle success, e.g., show success message, redirect to login page, etc.
 
-      if (!isValidEmail(email)) {
+      if (!isValidEmail(formData.email)) {
         return;
       }
 
-
-      if()
+      // Add your additional validation logic here
     } catch (error) {
-      console.error("Registration error:", error.response.data.message);
+      console.error("Registration error:", error);
       // Handle error, e.g., show error message to user
     }
   };
