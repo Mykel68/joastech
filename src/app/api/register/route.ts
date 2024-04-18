@@ -10,8 +10,6 @@ export const POST = async (request: any) => {
     const { name, email, password, phone, location, confirm_password } =
       await request.json();
 
-    console.log(request);
-
     // Check if any required field is missing
     if (
       !name ||
@@ -51,8 +49,7 @@ export const POST = async (request: any) => {
       phone,
       location,
     });
-    const savedUser = await newUser.save();
-    console.log(savedUser);
+    await newUser.save();
 
     return new NextResponse("User registered successfully", { status: 201 });
   } catch (err: any) {

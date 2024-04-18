@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import Link from "next/link";
 
 const RegisterPage: React.FC = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -32,7 +33,7 @@ const RegisterPage: React.FC = () => {
         return "Invalid Email";
       }
       const response = await axios.post("/api/register", formData);
-      console.log("Rgistration success", response.data);
+
       router.push("/login");
 
       // Add your additional validation logic here
@@ -51,7 +52,7 @@ const RegisterPage: React.FC = () => {
           {loading ? "Processing" : "Register"}
         </h1>
         <div className="shadow-lg bg-base-100 rounded-lg p-6 lg:p-10 w-full max-w-lg">
-          <>
+          <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm  mb-2">
                 Username
@@ -154,10 +155,7 @@ const RegisterPage: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <button
-                onClick={handleSubmit}
-                className="btn btn-primary w-full py-2 rounded-lg font-semibold"
-              >
+              <button className="btn btn-primary w-full py-2 rounded-lg font-semibold">
                 Sign up
               </button>
             </div>
@@ -168,7 +166,7 @@ const RegisterPage: React.FC = () => {
                 Login
               </Link>
             </p>
-          </>
+          </form>
           {/* <ToastContainer /> */}
         </div>
       </div>
