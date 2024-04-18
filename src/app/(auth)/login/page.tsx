@@ -1,38 +1,37 @@
-"use client";
+import React, { useState } from "react";
 import Link from "next/link";
-import React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 
-const login = () => {
+const Login = () => {
   const router = useRouter();
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [loading, setLoading] = React.useState(false);
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
       const response = await axios.post("/api/login", formData);
-
-      console.log(response.data);
       const token = response.data.token;
 
       // Store the token in sessionStorage
       sessionStorage.setItem("token", token);
-      toast.success("Login success");
 
+      toast.success("Login success");
       router.push("/home");
-    } catch (error: any) {
+    } catch (error) {
       console.log("Login failed", error.message);
       toast.error(error.message);
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div>
       <div className="hero min-h-screen bg-base-200">
@@ -108,4 +107,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;
