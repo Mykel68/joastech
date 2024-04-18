@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema(
     isAdmin: { type: Boolean, default: false },
     forgotPasswordToken: { type: String },
     forgotPasswordTokenExpiry: { type: Date },
+    verifyToken: { type: String },
     verifyTokenExpiry: { type: Date },
   },
   { timestamps: true }

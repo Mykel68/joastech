@@ -3,7 +3,7 @@ import { connect } from "@/dbConfig/dbConfig";
 import User from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
-
+import { sendEmail } from "@/helpers/mailer";
 connect();
 export const POST = async (request: any) => {
   try {
@@ -49,7 +49,10 @@ export const POST = async (request: any) => {
       phone,
       location,
     });
-    await newUser.save();
+    const savedUser = await newUser.save();
+
+    // send verification mail
+    await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
 
     return new NextResponse("User registered successfully", { status: 201 });
   } catch (err: any) {
