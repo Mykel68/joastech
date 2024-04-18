@@ -1,15 +1,17 @@
-import bcrypt from "bcryptjs";
-import User, { UserDocument } from "@/models/User";
-import connectDB from "@/utils/db";
-import { NextResponse } from "next/server";
+import { connect } from "@/dbConfig/dbConfig";
 
-export const POST = async (request: {
-  json: () => Promise<{ [key: string]: string }>;
-}) => {
-  const { name, email, password, phone, location, confirm_password } =
-    await request.json();
-  await connectDB();
+import User from "@/models/User";
+import { NextRequest, NextResponse } from "next/server";
+import bcryptjs from "bcryptjs";
+
+connect();
+export const POST = async (request: any) => {
   try {
+    const { name, email, password, phone, location, confirm_password } =
+      await request.json();
+
+    console.log(request);
+
     // Check if any required field is missing
     if (
       !name ||
@@ -19,49 +21,47 @@ export const POST = async (request: {
       !phone ||
       !location
     ) {
-      return new NextResponse(
-        { message: "All fields are required" },
-        { status: 400 }
-      );
+      return new NextResponse("All fields are required", { status: 400 });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return new NextResponse("Invalid email format", { status: 400 });
+    }
+
+    // Validate phone number format (if needed)
+
+    if (password !== confirm_password) {
+      return new NextResponse("Passwords do not match", { status: 400 });
     }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return new NextResponse(
-        { message: "Email is already registered" },
-        { status: 400 }
-      );
-    }
-
-    if (password !== confirm_password) {
-      return new NextResponse(
-        { message: "Passwords do not match" },
-        { status: 400 }
-      );
+      return new NextResponse("Email is already registered", { status: 400 });
     }
 
     const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcryptjs.hash(password, saltRounds);
 
-    const newUser: UserDocument = new User({
+    const newUser = new User({
       name,
       email,
       password: hashedPassword,
       phone,
       location,
     });
+    const savedUser = await newUser.save();
+    console.log(savedUser);
 
-    await newUser.save();
-
-    return new NextResponse(
-      { message: "User registered successfully" },
-      { status: 201 }
-    );
+    return new NextResponse("User registered successfully", { status: 201 });
   } catch (err: any) {
     console.error("Error:", err);
-    return new NextResponse(
-      { message: "Internal server error" },
-      { status: 500 }
-    );
+    if (err.name === "ValidationError") {
+      // Handle validation errors separately
+      return new NextResponse(err.message, { status: 400 });
+    } else {
+      return new NextResponse("Internal server error", { status: 500 });
+    }
   }
 };

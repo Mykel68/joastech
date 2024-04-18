@@ -8,11 +8,15 @@ const userSchema = new mongoose.Schema(
     phone: { type: String, required: true },
     location: { type: String, required: true },
     image: { type: String, default: "" },
-    verified: { type: Boolean, default: false },
+    isVerified: { type: Boolean, default: false },
+    isAdmin: { type: Boolean, default: false },
+    forgotPasswordToken: { type: String },
+    forgotPasswordTokenExpiry: { type: Date },
+    verifyTokenExpiry: { type: Date },
   },
   { timestamps: true }
 );
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 module.exports = User;
