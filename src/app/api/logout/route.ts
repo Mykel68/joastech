@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
+    // sessionStorage.removeItem("token");
     const response = NextResponse.json({
       message: "Logout successful",
       success: true,

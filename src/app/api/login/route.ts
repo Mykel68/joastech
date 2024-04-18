@@ -10,6 +10,7 @@ connect();
 export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
+
     const user = await User.findOne({ email });
     if (!user) {
       return NextResponse.json(
@@ -27,16 +28,17 @@ export async function POST(request: NextRequest) {
       username: user.username,
       email: user.email,
     };
-    const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET!, {
+    const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, {
       expiresIn: "1h",
     });
+
     const response = NextResponse.json({
       message: "Login successful",
       success: true,
+      token: token,
     });
     response.cookies.set("token", token, {
       httpOnly: true,
-      expires: new Date(Date.now() + 3600000),
     });
     return response;
   } catch (error: any) {

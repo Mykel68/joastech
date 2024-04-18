@@ -23,6 +23,7 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     try {
       await axios.get("/api/logout");
+      sessionStorage.removeItem("token");
       toast.success("Logout successful");
       router.push("/login");
     } catch (error: any) {

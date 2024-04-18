@@ -20,7 +20,7 @@ export function middleware(request: NextRequest) {
   }
 }
 
-// see "Matching Paths" below to learn more
+//Protected routes
 export const config = {
-  matchers: ["/", "/profile", "/login", "/register"],
+  matcher: ["/profile", "/login", "/register"],
 };

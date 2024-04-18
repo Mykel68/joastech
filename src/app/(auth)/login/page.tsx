@@ -16,8 +16,15 @@ const login = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      await axios.post("/api/login", formData);
+      const response = await axios.post("/api/login", formData);
+
+      console.log(response.data);
+      const token = response.data.token;
+
+      // Store the token in sessionStorage
+      sessionStorage.setItem("token", token);
       toast.success("Login success");
+
       router.push("/home");
     } catch (error: any) {
       console.log("Login failed", error.message);
