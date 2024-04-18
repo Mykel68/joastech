@@ -1,13 +1,39 @@
+"use client";
 import Link from "next/link";
 import React from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+import axios from "axios";
 
 const login = () => {
+  const router = useRouter();
+  const [formData, setFormData] = React.useState({
+    email: "",
+    password: "",
+  });
+  const [loading, setLoading] = React.useState(false);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      await axios.post("/api/login", formData);
+      toast.success("Login success");
+      router.push("/home");
+    } catch (error: any) {
+      console.log("Login failed", error.message);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div>
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div className="text-center lg:text-left">
-            <h1 className="text-5xl font-bold text-primary">Login now!</h1>
+            <h1 className="text-5xl font-bold text-primary">
+              {loading ? "Processing" : "Login"}
+            </h1>
             <p className="py-6">
               Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
               excepturi exercitationem quasi. In deleniti eaque aut repudiandae
@@ -15,7 +41,7 @@ const login = () => {
             </p>
           </div>
           <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-            <form className="card-body">
+            <form className="card-body" onSubmit={handleSubmit}>
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Email</span>
@@ -25,6 +51,10 @@ const login = () => {
                   placeholder="email"
                   className="input input-bordered input-primary"
                   required
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                 />
               </div>
               <div className="form-control">
@@ -36,6 +66,10 @@ const login = () => {
                   placeholder="password"
                   className="input input-bordered input-primary"
                   required
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
                 />
                 <div className="flex flex-row justify-between">
                   <label className="label">
