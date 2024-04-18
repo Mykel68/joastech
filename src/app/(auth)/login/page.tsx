@@ -26,7 +26,7 @@ const Login: React.FC = () => {
 
       toast.success("Login success");
       router.push("/home");
-    } catch (error) {
+    } catch (error: any) {
       console.log("Login failed", error.message);
       toast.error(error.message);
     } finally {
