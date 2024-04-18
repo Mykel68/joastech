@@ -16,12 +16,13 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-const Drawer = ({ children }) => {
+const Drawer = ({ children }: { children: React.ReactNode }) => {
   const { theme } = useContext(ThemeContext);
+  const router = useRouter();
 
-  const logout = () => {
+  const logout = async () => {
     try {
-      axios.get("/api/logout");
+      await axios.get("/api/logout");
       toast.success("Logout successful");
       router.push("/login");
     } catch (error: any) {
@@ -104,7 +105,6 @@ const Drawer = ({ children }) => {
               <li>
                 <button
                   onClick={logout}
-                  href="/logout"
                   className="btn btn-ghost justify-start"
                 >
                   <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />

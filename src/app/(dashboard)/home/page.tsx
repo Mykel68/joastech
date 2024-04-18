@@ -1,6 +1,7 @@
-// Profile.js
 import React from "react";
 import Drawer from "@/components/Drawer";
+import { useRouter } from "next/router";
+
 
 const Profile = () => {
   return (
