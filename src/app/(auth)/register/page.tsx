@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { toast } from "react-hot-toast";
+import { Toaster, toast } from "sonner";
 
 import Link from "next/link";
 
@@ -31,14 +31,16 @@ const RegisterPage: React.FC = () => {
       setLoading(true);
       if (!isValidEmail(formData.email)) {
         return "Invalid Email";
+        toast.error("Invalid Email");
       }
       const response = await axios.post("/api/register", formData);
-
+      toast.success("Registration successful. Please verify your email.");
       router.push("/login");
 
       // Add your additional validation logic here
     } catch (error: any) {
       console.error("Registration error:", error.message);
+      toast.error("Registration failed. Please try again.");
       // Handle error, e.g., show error message to user
     } finally {
       setLoading(false);
@@ -167,7 +169,7 @@ const RegisterPage: React.FC = () => {
               </Link>
             </p>
           </form>
-          {/* <ToastContainer /> */}
+          <Toaster position="top-right" richColors />
         </div>
       </div>
     </div>

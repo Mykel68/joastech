@@ -1,5 +1,4 @@
 import { connect } from "@/dbConfig/dbConfig";
-
 import User from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
@@ -18,9 +17,16 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+    if (!user.isVerified) {
+      return NextResponse.json(
+        { error: "Account not verified" },
+        { status: 409 }
+      );
+    }
+
     const validPassword = await bcryptjs.compare(password, user.password);
     if (!validPassword) {
-      return NextResponse.json({ error: "Inavalid password" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid password" }, { status: 400 });
     }
 
     const tokenData = {
@@ -42,6 +48,6 @@ export async function POST(request: NextRequest) {
     });
     return response;
   } catch (error: any) {
-    return NextResponse.json({ eror: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

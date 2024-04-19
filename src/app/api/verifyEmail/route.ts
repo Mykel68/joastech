@@ -6,7 +6,8 @@ connect();
 
 export async function POST(request: NextRequest) {
   try {
-    const { token } = await request.json();
+    const reqBody = await request.json();
+    const { token } = reqBody;
     console.log(token);
 
     // Find the user by the verification token
@@ -17,7 +18,7 @@ export async function POST(request: NextRequest) {
 
     // Check if user is not found
     if (!user) {
-      return NextResponse.json({ error: "Invalid token" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid token" }, { status: 700 });
     }
     console.log(user);
 

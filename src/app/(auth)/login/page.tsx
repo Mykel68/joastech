@@ -2,7 +2,8 @@
 import React, { useState, FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { toast } from "react-hot-toast";
+
+import { Toaster, toast } from "sonner";
 import axios from "axios";
 
 const Login: React.FC = () => {
@@ -28,8 +29,11 @@ const Login: React.FC = () => {
       toast.success("Login success");
       router.push("/home");
     } catch (error: any) {
-      console.log("Login failed", error.message);
-      toast.error(error.message);
+      if (error.response && error.response.status === 409) {
+        toast.error("Email not verified");
+      } else {
+        toast.error("Login failed");
+      }
     } finally {
       setLoading(false);
     }
@@ -103,6 +107,7 @@ const Login: React.FC = () => {
                 <button className="btn btn-primary">Login</button>
               </div>
             </form>
+            <Toaster position="top-right" richColors />
           </div>
         </div>
       </div>

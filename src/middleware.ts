@@ -9,7 +9,8 @@ export function middleware(request: NextRequest) {
     path == "/login" ||
     path === "/register" ||
     path === "/" ||
-    path === "/forgottenPassword";
+    path === "/forgottenPassword" ||
+    path === "/verifyemail";
 
   const token = request.cookies.get("token")?.value || "";
   if (isPublicPath && token) {
@@ -22,5 +23,5 @@ export function middleware(request: NextRequest) {
 
 //Protected routes
 export const config = {
-  matcher: ["/profile", "/login", "/register"],
+  matcher: ["/profile", "/login", "/register", "/verifyemail", "/home"],
 };
