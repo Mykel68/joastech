@@ -17,12 +17,13 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    if (!user.isVerified) {
-      return NextResponse.json(
-        { error: "Account not verified" },
-        { status: 409 }
-      );
-    }
+    //Only working on locla server now
+    // if (!user.isVerified) {
+    //   return NextResponse.json(
+    //     { error: "Account not verified" },
+    //     { status: 409 }
+    //   );
+    // }
 
     const validPassword = await bcryptjs.compare(password, user.password);
     if (!validPassword) {
