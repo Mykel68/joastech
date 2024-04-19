@@ -37,7 +37,9 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
         <Header />
-        <div className="container mx-auto px-5 min-h-screen">{children}</div>
+        <div className="container mx-auto px-5 min-h-screen pb-10">
+          {children}
+        </div>
         <label
           htmlFor="my-drawer-2"
           className="btn btn-primary drawer-button md:hidden"
