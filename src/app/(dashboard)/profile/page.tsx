@@ -25,7 +25,6 @@ const Home = () => {
       <div className="navbar">Navbar content</div>
       <div className="content">
         <h1>Profile Page</h1>
-        <p>Welcome, {user}</p>
       </div>
       <div className="footer">Footer content</div>
     </Drawer>
