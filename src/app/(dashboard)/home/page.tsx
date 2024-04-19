@@ -1,6 +1,7 @@
 import React from "react";
 import Drawer from "@/components/Drawer";
-import { useRouter } from "next/router";
+
+import Carousel from "@/components/static/carousel/Carousel";
 
 const Profile = () => {
   return (
@@ -8,6 +9,7 @@ const Profile = () => {
       <div className="navbar">Navbar content</div>
       <div className="content">
         {/* Home page content */}
+        <Carousel />
         <h1>Home Page</h1>
         <p>This is the home page content.</p>
       </div>
