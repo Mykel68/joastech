@@ -54,6 +54,8 @@ export const POST = async (request: any) => {
     // send verification mail
     await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
 
+    console.log("Email sent successfully");
+    await newUser.save();
     return new NextResponse("User registered successfully", { status: 201 });
   } catch (err: any) {
     console.error("Error:", err);

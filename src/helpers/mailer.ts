@@ -43,7 +43,7 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
         process.env.DOMAIN
       }/verifyemail?token=${hashedToken}</a> </p>`,
     };
-    console.log("Email sent successfully");
+
     const mailresponse = await transport.sendMail(mailOptions);
     return mailresponse;
   } catch (error: any) {

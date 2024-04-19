@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
     // Check if user is not found
     if (!user) {
-      return NextResponse.json({ error: "Invalid token" }, { status: 700 });
+      return NextResponse.json({ error: "Invalid token" }, { status: 400 });
     }
     console.log(user);
 
