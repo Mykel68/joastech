@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { Toaster, toast } from "sonner";
 import axios from "axios";
 
-const Login: React.FC = () => {
+const LoginForm: React.FC = () => {
+  // Changed component name to start with uppercase
   const router = useRouter();
   const [formData, setFormData] = useState<{ email: string; password: string }>(
     {
@@ -115,4 +116,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default LoginForm;
