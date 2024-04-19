@@ -19,7 +19,7 @@ const Carousel = () => {
   }, []);
 
   return (
-    <div className="carousel w-full" ref={carouselRef}>
+    <div className="carousel w-full h-[200px]" ref={carouselRef}>
       <div id="slide1" className="carousel-item relative w-full">
         <img
           src="https://daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.jpg"

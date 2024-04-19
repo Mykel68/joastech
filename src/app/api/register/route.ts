@@ -1,12 +1,11 @@
 import { connect } from "@/dbConfig/dbConfig";
+
 import User from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import { sendEmail } from "@/helpers/mailer";
-
 connect();
-
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
     const { name, email, password, phone, location, confirm_password } =
       await request.json();
@@ -30,27 +29,19 @@ export const POST = async (request: NextRequest) => {
     }
 
     // Validate phone number format (if needed)
-    const phoneRegex = /^\d{10}$/;
-    if (!phoneRegex.test(phone)) {
-      return new NextResponse("Invalid phone number format", { status: 400 });
-    }
 
-    // Check if passwords match
     if (password !== confirm_password) {
       return new NextResponse("Passwords do not match", { status: 400 });
     }
 
-    // Check if email is already registered
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return new NextResponse("Email is already registered", { status: 400 });
     }
 
-    // Hash the password
     const saltRounds = 10;
     const hashedPassword = await bcryptjs.hash(password, saltRounds);
 
-    // Create a new user
     const newUser = new User({
       name,
       email,
@@ -58,15 +49,13 @@ export const POST = async (request: NextRequest) => {
       phone,
       location,
     });
-
-    // Save the new user
     const savedUser = await newUser.save();
 
-    // Send verification email
+    // send verification mail
     await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
 
     console.log("Email sent successfully");
-
+    await newUser.save();
     return new NextResponse("User registered successfully", { status: 201 });
   } catch (err: any) {
     console.error("Error:", err);

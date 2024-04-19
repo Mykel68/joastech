@@ -56,7 +56,7 @@ const Profile = () => {
         <Carousel />
 
         {/* Welcome message */}
-        <h1 className="text-3xl mt-6 mb-4">Hello {user}</h1>
+        <h1 className="text-3xl mt-6 mb-4 text-center">Hello {user}</h1>
 
         {/* Card section */}
         <div className="flex flex-wrap gap-4 items-center justify-center ">
